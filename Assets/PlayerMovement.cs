@@ -8,7 +8,6 @@ public class PlayerMovement : MonoBehaviour
     public Rigidbody rb;
 
     private readonly float force = 1000f;
-    private float turnSmoothTime = 0.1f;
 
     private void FixedUpdate()
     {

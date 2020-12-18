@@ -6,7 +6,7 @@ public class Grapple : MonoBehaviour
 {
     private LineRenderer lr;
     private Vector3 grapplepoint;
-    private float maxDistance = 100f;
+    private float maxDistance = 400f;
     private SpringJoint joint;
     public LayerMask grappleable;
     public Transform hookTip, cam, pl;
@@ -20,6 +20,7 @@ public class Grapple : MonoBehaviour
 
     private void Update()
     {
+        Debug.DrawRay(transform.position, cam.forward);
         if (Input.GetMouseButtonDown(0))
         {
             StartGrapple();
@@ -28,6 +29,11 @@ public class Grapple : MonoBehaviour
         {
             StopGrapple();
         }
+    }
+
+    private void LateUpdate()
+    {
+        DrawRope();
     }
 
     void StartGrapple()
@@ -49,11 +55,21 @@ public class Grapple : MonoBehaviour
             joint.spring = 4.5f;
             joint.damper = 7f;
             joint.massScale = 4.5f;
+
+            lr.positionCount = 2;
         }
+    }
+
+    void DrawRope()
+    {
+        if (!joint) return;
+        lr.SetPosition(0, hookTip.position);
+        lr.SetPosition(1, grapplepoint);
     }
 
     void StopGrapple()
     {
-
+        lr.positionCount = 0;
+        Destroy(joint);
     }
 }
